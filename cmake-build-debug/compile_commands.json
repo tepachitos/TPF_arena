@@ -1,0 +1,17 @@
+[
+{
+  "directory": "/home/solrac/Projects/TPF_arena/cmake-build-debug",
+  "command": "/usr/bin/cc -DCMOCKA_EXPORTS -D_GNU_SOURCE -D_XOPEN_SOURCE=700 -I/home/solrac/Projects/TPF_arena/cmake-build-debug/vendor/cmocka/src -I/home/solrac/Projects/TPF_arena/vendor/cmocka/src -I/home/solrac/Projects/TPF_arena/cmake-build-debug/vendor/cmocka -I/home/solrac/Projects/TPF_arena/vendor/cmocka/include -fPIC -Werror -std=c99 -Wpedantic -Wall -Wshadow -Wmissing-prototypes -Wcast-align -Werror=address -Wstrict-prototypes -Werror=strict-prototypes -Wwrite-strings -Werror=write-strings -Wimplicit-function-declaration -Werror-implicit-function-declaration -Wpointer-arith -Werror=pointer-arith -Wreturn-type -Werror=return-type -Wuninitialized -Werror=uninitialized -Wimplicit-fallthrough -Werror=strict-overflow -Wstrict-overflow=2 -Wno-format-zero-length -Wmissing-field-initializers -Wold-style-definition -Werror=old-style-definition -Wimplicit-int -Werror=implicit-int -Wint-conversion -Werror=int-conversion -Wformat -Wformat-security -Werror=format-security -fno-common -fstack-protector-strong -fstack-clash-protection -Wno-error=deprecated-declarations -Wno-error=tautological-compare -DHAVE_CONFIG_H -std=gnu99 -o vendor/cmocka/src/CMakeFiles/cmocka.dir/cmocka.c.o -c /home/solrac/Projects/TPF_arena/vendor/cmocka/src/cmocka.c",
+  "file": "/home/solrac/Projects/TPF_arena/vendor/cmocka/src/cmocka.c"
+},
+{
+  "directory": "/home/solrac/Projects/TPF_arena/cmake-build-debug",
+  "command": "/usr/bin/cc -I/home/solrac/Projects/TPF_arena/cmake-build-debug/build_config -std=gnu11 -o arena/CMakeFiles/tpf_arena.dir/arena.c.o -c /home/solrac/Projects/TPF_arena/arena/arena.c",
+  "file": "/home/solrac/Projects/TPF_arena/arena/arena.c"
+},
+{
+  "directory": "/home/solrac/Projects/TPF_arena/cmake-build-debug",
+  "command": "/usr/bin/cc -I/home/solrac/Projects/TPF_arena/vendor/cmocka/include -I/home/solrac/Projects/TPF_arena/arena -I/home/solrac/Projects/TPF_arena/cmake-build-debug/build_config -g -Wall -std=gnu11 -o arena/CMakeFiles/arena_test.dir/arena_test.c.o -c /home/solrac/Projects/TPF_arena/arena/arena_test.c",
+  "file": "/home/solrac/Projects/TPF_arena/arena/arena_test.c"
+}
+]
