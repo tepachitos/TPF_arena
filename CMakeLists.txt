@@ -19,5 +19,4 @@ find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3)
 add_subdirectory(vendor)
 
 # Modules
-add_subdirectory(build_config)
 add_subdirectory(arena)

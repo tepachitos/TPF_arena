@@ -8,11 +8,7 @@
 
 #include <TPF/arena.h>
 
-static void test_dummy(void **state) {
-  (void)state;
-
-  assert_int_equal(TPF_ARENA_VERSION_MAJOR, 1);
-}
+static void test_dummy(void **state) { (void)state; }
 
 int main(void) {
   const struct CMUnitTest tests[] = {
