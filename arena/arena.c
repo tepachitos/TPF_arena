@@ -49,7 +49,7 @@ void *TPF_ArenaTryPush(TPF_Arena *arena, size_t size) {
   SDL_assert_paranoid(size > 0 && "TPF_ArenaTryPush: size must not be zero");
   // clang-format on
 
-  if (size > arena->data_size - arena->data_offset) {
+  if (size > TPF_ArenaRemaining(arena)) {
     return NULL;
   }
 
@@ -175,6 +175,11 @@ void TPF_ArenaResetTo(TPF_Arena *arena, size_t checkpoint) {
   // NOLINTNEXTLINE(bugprone-sizeof-expression)
   SDL_assert_paranoid(checkpoint <= arena->data_size && "TPF_ArenaRestTo: checkpoint out of bounds");
   // clang-format on
+
+#ifdef TPF_ARENA_DEBUG
+  // poison so valgrind yells at us
+  SDL_memset(arena->data_base, 0xDD, arena->data_offset);
+#endif
   arena->data_offset = checkpoint;
 }
 
@@ -183,6 +188,11 @@ void TPF_ArenaClear(TPF_Arena *arena) {
   // NOLINTNEXTLINE(bugprone-sizeof-expression)
   SDL_assert_paranoid(arena != NULL && "TPF_ArenaClear: arena must not be NULL");
   // clang-format on
+
+#ifdef TPF_ARENA_DEBUG
+  // poison so valgrind yells at us
+  SDL_memset(arena->data_base, 0xDD, arena->data_offset);
+#endif
   arena->data_offset = 0;
 }
 
