@@ -5,3 +5,4 @@ target_include_directories(tpf_arena INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}")
 
 # Unit testing
 setup_test(NAME arena LIBS SDL3::SDL3 tpf_arena)
+add_memcheck_target(arena_test)

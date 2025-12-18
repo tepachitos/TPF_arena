@@ -10,6 +10,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # CMake internals
 include(cmake/testing.cmake)
+include(cmake/memcheck.cmake)
 enable_testing()
 
 # System packages
