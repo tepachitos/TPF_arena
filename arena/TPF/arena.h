@@ -24,8 +24,8 @@ TPF_Arena *TPF_CreateArena(size_t size);
 void TPF_DestroyArena(TPF_Arena *arena);
 
 /**
- * @brief Tries to push size bytes on top of arena, if there is no
- * more space the it will return NULL without setting an error.
+ * @brief Tries to push size bytes on top of an arena, if there is no
+ * more space, it will return NULL without setting an error.
  *
  * @param arena that will contain the block.
  * @param size of the block.
@@ -35,7 +35,7 @@ void *TPF_ArenaTryPush(TPF_Arena *arena, size_t size);
 
 /**
  * @brief Pushes a block of size bytes in the arena, if no space
- * is available then it will return NULL and set an error.
+ * is available, then it will return NULL and set an error.
  *
  * @param arena that will contain the block.
  * @param size of the block.
@@ -55,7 +55,7 @@ void *TPF_ArenaPush(TPF_Arena *arena, size_t size);
 void *TPF_ArenaPushZeroes(TPF_Arena *arena, size_t size);
 
 /**
- * @brief Pushes a block of size bytes in the arena with a
+ * @brief Pushes a block of size bytes in the arena with
  * left padding corresponding to the local machine standard alignment,
  * returns NULL if no memory is available.
  *
@@ -67,9 +67,9 @@ void *TPF_ArenaPushZeroes(TPF_Arena *arena, size_t size);
 void *TPF_ArenaTryAlignedPush(TPF_Arena *arena, size_t alignment, size_t size);
 
 /**
- * @brief Pushes a block of size bytes in the arena with a
+ * @brief Pushes a block of size bytes in the arena with
  * left padding corresponding to the local machine standard alignment,
- * returns NULL and sets an error if no memory is available.
+ * returns NULL, and sets an error if no memory is available.
  *
  * @param arena that will contain the block.
  * @param alignment to use for the allocation.
@@ -79,7 +79,7 @@ void *TPF_ArenaTryAlignedPush(TPF_Arena *arena, size_t alignment, size_t size);
 void *TPF_ArenaAlignedPush(TPF_Arena *arena, size_t alignment, size_t size);
 
 /**
- * @brief Pushes a block of size bytes in the arena with a
+ * @brief Pushes a block of size bytes in the arena with
  * left padding corresponding to the local machine standard alignment,
  * the block is then initialized to zeroes. Returns NULL if no memory is
  * available.
@@ -89,7 +89,7 @@ void *TPF_ArenaAlignedPush(TPF_Arena *arena, size_t alignment, size_t size);
  * @param size of the block initialized to zeroes.
  * @return a pointer to the usable memory, NULL if EOM.
  */
-void *TPF_ArenaAlignedPushZeroes(TPF_Arena *arena, size_t algiment,
+void *TPF_ArenaAlignedPushZeroes(TPF_Arena *arena, size_t alignment,
                                  size_t size);
 
 /**
@@ -104,9 +104,10 @@ size_t TPF_ArenaMark(const TPF_Arena *arena);
  * @brief Recovers a checkpoint of an arena by setting
  * its head to the given position.
  *
- * @param checkpoint to recover the arena.
+ * @param arena arena to be reset.
+ * @param mark to recover the arena.
  */
-void TPF_ArenaResetTo(TPF_Arena *arena, size_t checkpoint);
+void TPF_ArenaResetTo(TPF_Arena *arena, size_t mark);
 
 /**
  * @brief Clears everything from the arena, settings its position
@@ -118,7 +119,7 @@ void TPF_ArenaClear(TPF_Arena *arena);
  * @brief returns the current remaining storage in the arena.
  *
  * @param arena to be queried.
- * @return remaining memory on arena.
+ * @return remaining memory on the arena.
  */
 size_t TPF_ArenaRemaining(const TPF_Arena *arena);
 
@@ -126,7 +127,7 @@ size_t TPF_ArenaRemaining(const TPF_Arena *arena);
  * @brief returns the used memory in the arena.
  *
  * @param arena to be queried.
- * @return used memory on arena.
+ * @return used memory on the arena.
  */
 size_t TPF_ArenaUsed(const TPF_Arena *arena);
 #endif /* TPF_ARENA_H */
