@@ -3,17 +3,27 @@
 
 #include <SDL3/SDL_stdinc.h>
 
-typedef struct TPF_Arena {
-  size_t data_offset;
-  size_t data_size;
-  Uint8 *data_base;
-} TPF_Arena;
+struct TPF_ArenaChunk;
+
+typedef struct TPF_ArenaConfig {
+  size_t max_arena_size;
+  size_t max_chunk_size;
+  // size_t max_free_size; // TODO: Implement this thingy
+  size_t def_chunk_size;
+} TPF_ArenaConfig;
+
+typedef struct TPF_Arena TPF_Arena;
+typedef struct TPF_ArenaMark {
+  struct TPF_ArenaChunk *chunk;
+  size_t used;
+} TPF_ArenaMark;
 
 /**
- * @brief Create a new arena using a specified configuration (for now only
- * static, heap arenas are supported).
+ * @brief Create a new arena using a specified configuration.
+ *
+ * @param config to use while the arena exists.
  */
-TPF_Arena *TPF_CreateArena(size_t size);
+TPF_Arena *TPF_ArenaCreate(const TPF_ArenaConfig config);
 
 /**
  * @brief Releases the memory used by the arena and the arena handler
@@ -21,7 +31,7 @@ TPF_Arena *TPF_CreateArena(size_t size);
  *
  * @param arena to be released.
  */
-void TPF_DestroyArena(TPF_Arena *arena);
+void TPF_ArenaDestroy(TPF_Arena *arena);
 
 /**
  * @brief Tries to push size bytes on top of an arena, if there is no
@@ -31,74 +41,50 @@ void TPF_DestroyArena(TPF_Arena *arena);
  * @param size of the block.
  * @return a pointer to the usable memory, NULL if EOM.
  */
-void *TPF_ArenaTryPush(TPF_Arena *arena, size_t size);
+void *TPF_ArenaTryPush(TPF_Arena *arena, size_t alignment, size_t size);
 
 /**
  * @brief Pushes a block of size bytes in the arena, if no space
  * is available, then it will return NULL and set an error.
  *
  * @param arena that will contain the block.
+ * @param alignment of the data.
  * @param size of the block.
  * @return a pointer to the usable memory, NULL if EOM.
  */
-void *TPF_ArenaPush(TPF_Arena *arena, size_t size);
+void *TPF_ArenaPush(TPF_Arena *arena, size_t alignment, size_t size);
 
 /**
- * @brief Pushes a block of size bytes in the arena, the block
+ * @brief Tries to push a block of size bytes in the arena, the block
  * is then initialized to zeroes. Returns NULL if no memory is
  * available.
  *
  * @param arena that will contain the block.
+ * @param alignment of the data.
  * @param size of the block initialized to zeroes.
  * @return a pointer to the usable memory, NULL if EOM.
  */
-void *TPF_ArenaPushZeroes(TPF_Arena *arena, size_t size);
+void *TPF_ArenaTryPushZeroes(TPF_Arena *arena, size_t alignment, size_t size);
 
 /**
- * @brief Pushes a block of size bytes in the arena with
- * left padding corresponding to the local machine standard alignment,
- * returns NULL if no memory is available.
+ * @brief Pushes a block of size bytes in the arena, the block
+ * is then initialized to zeroes. Returns NULL if no memory is
+ * available and sets SDL_Error.
  *
  * @param arena that will contain the block.
- * @param alignment to use for the allocation.
- * @param size of the block.
- * @return a pointer to the usable memory, NULL if EOM.
- */
-void *TPF_ArenaTryAlignedPush(TPF_Arena *arena, size_t alignment, size_t size);
-
-/**
- * @brief Pushes a block of size bytes in the arena with
- * left padding corresponding to the local machine standard alignment,
- * returns NULL, and sets an error if no memory is available.
- *
- * @param arena that will contain the block.
- * @param alignment to use for the allocation.
- * @param size of the block.
- * @return a pointer to the usable memory, NULL if EOM.
- */
-void *TPF_ArenaAlignedPush(TPF_Arena *arena, size_t alignment, size_t size);
-
-/**
- * @brief Pushes a block of size bytes in the arena with
- * left padding corresponding to the local machine standard alignment,
- * the block is then initialized to zeroes. Returns NULL if no memory is
- * available.
- *
- * @param arena that will contain the block.
- * @param alignment to use for the allocation.
+ * @param alignment of the data.
  * @param size of the block initialized to zeroes.
  * @return a pointer to the usable memory, NULL if EOM.
  */
-void *TPF_ArenaAlignedPushZeroes(TPF_Arena *arena, size_t alignment,
-                                 size_t size);
+void *TPF_ArenaPushZeroes(TPF_Arena *arena, size_t alignment, size_t size);
 
 /**
- * @brief Returns the current size of the arena.
+ * @brief Returns the current state of the arena.
  *
  * @param arena to be queried.
  * @return the current checkpoint of the given arena.
  */
-size_t TPF_ArenaMark(const TPF_Arena *arena);
+const TPF_ArenaMark TPF_ArenaGetMark(const TPF_Arena *arena);
 
 /**
  * @brief Recovers a checkpoint of an arena by setting
@@ -107,7 +93,7 @@ size_t TPF_ArenaMark(const TPF_Arena *arena);
  * @param arena arena to be reset.
  * @param mark to recover the arena.
  */
-void TPF_ArenaResetTo(TPF_Arena *arena, size_t mark);
+void TPF_ArenaResetTo(TPF_Arena *arena, const TPF_ArenaMark mark);
 
 /**
  * @brief Clears everything from the arena, settings its position
@@ -122,6 +108,14 @@ void TPF_ArenaClear(TPF_Arena *arena);
  * @return remaining memory on the arena.
  */
 size_t TPF_ArenaRemaining(const TPF_Arena *arena);
+
+/**
+ * @brief returns the remaining storage in the current chunk.
+ *
+ * @param arena to be queried.
+ * @return remaining memory on chunk.
+ */
+size_t TPF_ArenaTailRemaining(const TPF_Arena *arena);
 
 /**
  * @brief returns the used memory in the arena.
