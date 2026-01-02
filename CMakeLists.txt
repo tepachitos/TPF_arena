@@ -12,6 +12,9 @@ if(PROJECT_IS_TOP_LEVEL)
   # CMake internals
   include(vendor/TPF_cmake/testing.cmake)
   include(vendor/TPF_cmake/memcheck.cmake)
+  if(TPF_ENABLE_TESTS)
+    enable_testing()
+  endif()
 
   # System packages
   find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3)
@@ -20,16 +23,15 @@ if(PROJECT_IS_TOP_LEVEL)
   add_subdirectory(vendor)
 endif()
 
-# Modules
-if(TPF_ENABLE_TESTS)
-  enable_testing()
-endif()
-
+# This module
 add_library(TPF_arena STATIC)
 target_sources(TPF_arena PRIVATE arena.c)
 target_link_libraries(TPF_arena PRIVATE SDL3::SDL3)
-target_include_directories(TPF_arena INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}")
+target_include_directories(TPF_arena PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
+target_include_directories(TPF_arena INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 # Unit testing
-setup_test(NAME arena LIBS SDL3::SDL3 TPF_arena)
-add_memcheck_target(arena_test)
+if(TPF_ENABLE_TESTS)
+  setup_test(NAME arena LIBS SDL3::SDL3 TPF_arena)
+  add_memcheck_target(arena_test)
+endif()
