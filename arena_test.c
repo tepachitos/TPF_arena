@@ -8,7 +8,7 @@
 
 #include <SDL3/SDL_error.h>  // SDL_GetError, SDL_ClearError
 #include <SDL3/SDL_stdinc.h> // Uint8
-#include <TPF/arena.h>
+#include <TPF/TPF_arena.h>
 
 static void assert_aligned(const void *p, size_t alignment) {
   uintptr_t v = (uintptr_t)p;

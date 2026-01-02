@@ -1,4 +1,4 @@
-#include "TPF/arena.h"
+#include "TPF/TPF_arena.h"
 
 #include <SDL3/SDL_assert.h>
 #include <SDL3/SDL_error.h>
